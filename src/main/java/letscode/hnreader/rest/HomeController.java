@@ -4,7 +4,7 @@ import letscode.hnreader.api.HnClient;
 import letscode.hnreader.api.PostService;
 import letscode.hnreader.api.dto.HnItem;
 import letscode.hnreader.domain.Post;
-import letscode.hnreader.domain.RoutingMode;
+import letscode.hnreader.domain.RenderingMode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -135,7 +135,7 @@ public class HomeController {
     }
 
     private String resolveRenderingMode(String renderingMode) {
-        var mode = RoutingMode.fromString(renderingMode.trim());
+        var mode = RenderingMode.fromString(renderingMode.trim());
         log.debug("Rendering mode: {}", mode);
         return switch (mode) {
             case THYMELEAF -> "index";

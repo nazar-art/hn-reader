@@ -14,7 +14,10 @@
 </head>
 <body>
 <main class="container">
-    <h1>Top 100 Hacker News Stories</h1>
+
+    <a href="/?page=1" onclick="location.reload();">
+        <h1>Top 100 Hacker News Stories</h1>
+    </a>
 
     <b>Jte template</b>
 

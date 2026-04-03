@@ -2,14 +2,14 @@ package letscode.hnreader.domain;
 
 import java.util.Arrays;
 
-public enum RoutingMode {
+public enum RenderingMode {
     THYMELEAF,
     JTE;
 
-    public static RoutingMode fromString(String mode) {
+    public static RenderingMode fromString(String mode) {
         return Arrays.stream(values())
             .filter(m -> m.toString().equalsIgnoreCase(mode))
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Invalid rendering mode: " + mode));
+            .orElse(THYMELEAF);
     }
 }
