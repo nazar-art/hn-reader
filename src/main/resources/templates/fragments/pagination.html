@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="pagination(currentPage, totalPages)" aria-label="Pagination">
+    <ul>
+        <li>
+            <a th:href="@{/(page=1)}" 
+               th:classappend="${currentPage <= 1} ? 'disabled' : ''"
+               th:attr="aria-disabled=${currentPage <= 1}">
+                First
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/(page=${currentPage - 1})}" 
+               th:classappend="${currentPage <= 1} ? 'disabled' : ''"
+               th:attr="aria-disabled=${currentPage <= 1}">
+                Previous
+            </a>
+        </li>
+        
+        <li th:if="${currentPage > 2}">
+            <a th:href="@{/(page=${currentPage - 2})}" th:text="${currentPage - 2}"></a>
+        </li>
+        
+        <li th:if="${currentPage > 1}">
+            <a th:href="@{/(page=${currentPage - 1})}" th:text="${currentPage - 1}"></a>
+        </li>
+        
+        <li>
+            <a th:href="@{/(page=${currentPage})}" aria-current="page" th:text="${currentPage}"></a>
+        </li>
+        
+        <li th:if="${currentPage < totalPages}">
+            <a th:href="@{/(page=${currentPage + 1})}" th:text="${currentPage + 1}"></a>
+        </li>
+        
+        <li th:if="${currentPage < totalPages - 1}">
+            <a th:href="@{/(page=${currentPage + 2})}" th:text="${currentPage + 2}"></a>
+        </li>
+        
+        <li>
+            <a th:href="@{/(page=${currentPage + 1})}" 
+               th:classappend="${currentPage >= totalPages} ? 'disabled' : ''"
+               th:attr="aria-disabled=${currentPage >= totalPages}">
+                Next
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/(page=${totalPages})}" 
+               th:classappend="${currentPage >= totalPages} ? 'disabled' : ''"
+               th:attr="aria-disabled=${currentPage >= totalPages}">
+                Last
+            </a>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<article th:fragment="news-item (story)" class="news-item">
+    <header>
+        <a th:href="${story.url}" th:text="${story.title}" target="_blank">Title</a>
+    </header>
+
+    <div th:utext="${story.text}"></div>
+
+    <footer>
+        <span th:text="${story.score}">0</span> points by
+        <span th:text="${story.by}">author</span> |
+        <a th:href="@{'https://news.ycombinator.com/item?id=' + ${story.id}}" target="_blank">comments</a>
+    </footer>
+</article>
+</body>
+</html>

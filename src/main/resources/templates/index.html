@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hacker News Top 100</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body>
+<main class="container">
+    <h1>Top 100 Hacker News Stories</h1>
+
+    <div th:if="${totalPages > 1}" th:insert="~{fragments/pagination :: pagination(currentPage=${currentPage}, totalPages=${totalPages})}"></div>
+
+    <div th:each="story : ${stories}"
+         th:insert="~{fragments/news-item :: news-item(story=${story})}">
+    </div>
+
+    <div th:if="${totalPages > 1}" th:insert="~{fragments/pagination :: pagination(currentPage=${currentPage}, totalPages=${totalPages})}"></div>
+</main>
+</body>
+</html>
