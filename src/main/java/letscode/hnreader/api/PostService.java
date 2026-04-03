@@ -47,10 +47,9 @@ public class PostService {
      * Convert list of DTO to list of entities.
      */
     public List<Post> toEntityList(List<HnItem> dtos) {
-        if (dtos == null) {
-            return List.of();
-        }
-        return dtos.stream()
+        return dtos == null
+            ? List.of()
+            : dtos.stream()
             .map(this::toEntity)
             .toList();
     }
@@ -59,11 +58,9 @@ public class PostService {
      * Convert entity Post to DTO HnItem.
      */
     public HnItem toDto(Post entity) {
-        if (entity == null) {
-            return null;
-        }
-
-        return HnItem.builder()
+        return entity == null
+            ? null
+            : HnItem.builder()
             .id(entity.getId())
             .text(entity.getText())
             .by(entity.getBy())
@@ -75,6 +72,7 @@ public class PostService {
             .parent(entity.getParent())
             .descendants(entity.getDescendants())
             .build();
+
     }
 
     /**

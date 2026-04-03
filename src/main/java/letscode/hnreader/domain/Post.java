@@ -26,23 +26,17 @@ public class Post {
 
     @Column(columnDefinition = "TEXT")
     private String text;
-
     @Column(name = "by")
     private String by;
 
     private Integer score;
-
     private Long time;
 
     @Column(columnDefinition = "TEXT")
     private String title;
-
     private String type;
-
     private String url;
-
     private Integer parent;
-
     private Integer descendants;
 
     @Column(name = "created_at")

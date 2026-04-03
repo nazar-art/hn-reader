@@ -1,4 +1,4 @@
-package letscode.hnreader;
+package letscode.hnreader.rest;
 
 import letscode.hnreader.api.HnClient;
 import letscode.hnreader.api.PostService;
@@ -25,11 +25,10 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 @Slf4j
 public class HomeController {
-
     private static final int PAGE_SIZE = 10;
 
     @Value("${view.rendering.mode}")
-    public String renderingMode;
+    private String renderingMode;
 
     private final HnClient hnClient;
     private final PostService postService;
@@ -55,7 +54,9 @@ public class HomeController {
             .collectList()
             .block();
 
-        storyIds = storyIds == null ? Collections.emptyList() : storyIds;
+        if (storyIds == null) {
+            storyIds = Collections.emptyList();
+        }
 
         // get saved posts from DB
         List<Post> cachedPosts = postService.findByIds(storyIds);
@@ -123,17 +124,17 @@ public class HomeController {
 
         var items = pagePosts.stream()
             .map(postService::toDto)
-            .collect(Collectors.toList());
+            .toList();
 
         model.addAttribute("stories", items);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("pageSize", PAGE_SIZE);
 
-        return getRenderingMode(renderingMode);
+        return resolveRenderingMode(renderingMode);
     }
 
-    private String getRenderingMode(String renderingMode) {
+    private String resolveRenderingMode(String renderingMode) {
         var mode = RoutingMode.fromString(renderingMode.trim());
         log.debug("Rendering mode: {}", mode);
         return switch (mode) {

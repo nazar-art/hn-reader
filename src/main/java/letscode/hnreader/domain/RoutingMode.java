@@ -8,8 +8,8 @@ public enum RoutingMode {
 
     public static RoutingMode fromString(String mode) {
         return Arrays.stream(values())
-            .filter(v -> v.toString().equalsIgnoreCase(mode))
+            .filter(m -> m.toString().equalsIgnoreCase(mode))
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Illegal routing mode: " + mode));
+            .orElseThrow(() -> new IllegalArgumentException("Invalid rendering mode: " + mode));
     }
 }

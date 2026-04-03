@@ -8,15 +8,15 @@
     <ul>
         <li>
             <a href="/?page=1"
-               class="${currentPage <= 1 ? "disabled" : ""}"
-               aria-disabled="${currentPage <= 1}">
+               class="${isBeginning ? "disabled" : ""}"
+               aria-disabled="${isBeginning}">
                 First
             </a>
         </li>
         <li>
             <a href="/?page=${currentPage - 1}"
-               class="${currentPage <= 1 ? "disabled" : ""}"
-               aria-disabled="${currentPage <= 1}">
+               class="${isBeginning ? "disabled" : ""}"
+               aria-disabled="${isBeginning}">
                 Previous
             </a>
         </li>
@@ -61,15 +61,15 @@
 
         <li>
             <a href="/?page=${currentPage + 1}"
-               class="${currentPage >= totalPages ? "disabled" : ""}"
-               aria-disabled="${currentPage >= totalPages}">
+               class="${isEnding ? "disabled" : ""}"
+               aria-disabled="${isEnding}">
                 Next
             </a>
         </li>
         <li>
             <a href="/?page=${totalPages}"
-               class="${currentPage >= totalPages ? "disabled" : ""}"
-               aria-disabled="${currentPage >= totalPages}">
+               class="${isEnding ? "disabled" : ""}"
+               aria-disabled="${isEnding}">
                 Last
             </a>
         </li>
