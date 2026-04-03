@@ -34,6 +34,7 @@ dependencies {
     // template engines
     implementation("gg.jte:jte-spring-boot-starter-4:3.2.3")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     // DB
     runtimeOnly("org.xerial:sqlite-jdbc")
