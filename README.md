@@ -1,10 +1,11 @@
 ## Hn Reader App
 
-Demo project for listing top stories. Base url is:
+Demo project for listing Hacker News posts.  
+Base url is:
 
     https://hacker-news.firebaseio.com/v0
 
-Two ways of rendering by Thymeleaf or jte.
+Two modes are available for rendering by Thymeleaf or jte.
 
 Thymeleaf located into 'resources/fragments'.  
 Jte located into 'jte/next'.
