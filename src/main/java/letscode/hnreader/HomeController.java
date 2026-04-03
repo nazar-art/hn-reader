@@ -134,7 +134,7 @@ public class HomeController {
 
     private String getRenderingMode(String renderingMode) {
         var mode = RoutingMode.fromString(renderingMode.trim());
-        log.info("Rendering mode: {}", mode);
+        log.debug("Rendering mode: {}", mode);
         return switch (mode) {
             case THYMELEAF -> "index";
             case JTE -> "next/index";
