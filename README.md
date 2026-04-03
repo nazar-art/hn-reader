@@ -1,6 +1,6 @@
 ## Hn Reader App
 
-Demo project for listing Hacker News posts.  
+Demo project for listing the latest Hacker News posts.  
 Base url is:
 
     https://hacker-news.firebaseio.com/v0
