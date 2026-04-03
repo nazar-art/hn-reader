@@ -27,6 +27,7 @@ import java.util.stream.Stream;
 public class HomeController {
 
     private static final int PAGE_SIZE = 10;
+
     @Value("${view.rendering.mode}")
     public String renderingMode;
 
