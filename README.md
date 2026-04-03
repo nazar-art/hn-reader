@@ -6,5 +6,5 @@ Demo project for listing top stories. Base url is:
 
 Two ways of rendering by Thymeleaf or jte.
 
-Thymeleaf located into 'resources/fragments'.
+Thymeleaf located into 'resources/fragments'.  
 Jte located into 'jte/next'.
