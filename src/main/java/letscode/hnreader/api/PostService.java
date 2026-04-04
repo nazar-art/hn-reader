@@ -25,11 +25,9 @@ public class PostService {
      * Convert DTO HnItem to Post.
      */
     public Post toEntity(HnItem dto) {
-        if (dto == null) {
-            return null;
-        }
-
-        return Post.builder()
+        return dto == null
+            ? null
+            : Post.builder()
             .id(dto.getId())
             .text(dto.getText())
             .by(dto.getBy())
@@ -41,6 +39,7 @@ public class PostService {
             .parent(dto.getParent())
             .descendants(dto.getDescendants())
             .build();
+
     }
 
     /**
