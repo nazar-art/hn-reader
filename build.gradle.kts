@@ -41,9 +41,12 @@ dependencies {
     runtimeOnly("org.hibernate.orm:hibernate-community-dialects")
 
     // utils
+    implementation("org.mapstruct:mapstruct:1.6.3")
+    annotationProcessor("org.mapstruct:mapstruct-processor:1.6.3")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
     implementation("io.netty:netty-resolver-dns-native-macos:4.2.12.Final:osx-aarch_64")
 
     // test

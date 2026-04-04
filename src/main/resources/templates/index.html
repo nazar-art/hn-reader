@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Hacker News Top 100</title>
@@ -8,6 +8,8 @@
 <body>
 <main class="container">
     <h1>Top 100 Hacker News Stories</h1>
+
+    <a href="/?refresh=true">Home</a>
 
     <div th:if="${totalPages > 1}" th:insert="~{fragments/pagination :: pagination(currentPage=${currentPage}, totalPages=${totalPages})}"></div>
 

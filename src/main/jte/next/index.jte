@@ -14,12 +14,13 @@
 </head>
 <body>
 <main class="container">
-
-    <a href="/?page=1" onclick="location.reload();">
-        <h1>Top 100 Hacker News Stories</h1>
-    </a>
+    <h1>Top 100 Hacker News Stories</h1>
 
     <b>Jte template</b>
+
+    <a href="/?refresh=true">
+        <b>Home</b>
+    </a>
 
     @if (totalPages > 1)
         @template.next.fragments.pagination(currentPage = currentPage, totalPages = totalPages)

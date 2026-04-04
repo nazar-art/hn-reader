@@ -1,9 +1,7 @@
 package letscode.hnreader.rest;
 
-import letscode.hnreader.api.HnClient;
 import letscode.hnreader.api.PostService;
-import letscode.hnreader.api.dto.HnItem;
-import letscode.hnreader.domain.Post;
+import letscode.hnreader.api.NewsService;
 import letscode.hnreader.domain.RenderingMode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,14 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import reactor.core.publisher.Flux;
-
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,104 +20,23 @@ public class HomeController {
     @Value("${view.rendering.mode}")
     private String renderingMode;
 
-    private final HnClient hnClient;
     private final PostService postService;
+    private final NewsService newsService;
 
     @GetMapping("/")
-    public String index(
-        @RequestParam(required = false, defaultValue = "1") int page,
-        Model model) {
+    public String index(@RequestParam(defaultValue = "1") int page,
+                        @RequestParam(defaultValue = "false") boolean refresh,
+                        Model model) {
 
-        // if first page or param is missed -> call to API
-        if (page == 1) {
-            return handleApiRequest(model, page);
+        if (refresh || postService.count() == 0) {
+            newsService.syncFromApi();
         }
 
-        // for the rest -> read from DB
-        return handleDbRequest(model, page);
-    }
+        int totalPages = newsService.getTotalPages(PAGE_SIZE);
+        int safePage = Math.max(1, Math.min(page, Math.max(1, totalPages)));
 
-    private String handleApiRequest(Model model, int page) {
-        // Get IDs from API
-        List<Integer> storyIds = hnClient.getTopStories()
-            .take(100)
-            .collectList()
-            .block();
-
-        if (storyIds == null) {
-            storyIds = Collections.emptyList();
-        }
-
-        // get saved posts from DB
-        List<Post> cachedPosts = postService.findByIds(storyIds);
-        Set<Integer> cachedIds = cachedPosts.stream()
-            .map(Post::getId)
-            .collect(Collectors.toSet());
-
-        // find which IDs isn't at DB
-        Set<Integer> missingIds = storyIds.stream()
-                .filter(id -> !cachedIds.contains(id))
-                .collect(Collectors.toSet());
-
-        if (missingIds.isEmpty()) {
-            // all posts at DB -> use them
-            log.info("All {} posts found in cache", cachedPosts.size());
-            return paginateAndRender(cachedPosts, storyIds, page, model);
-        }
-
-        // if missed -> get from API
-        log.info("Loading {} missing posts from API", missingIds.size());
-
-        List<HnItem> loadedItems = Flux.fromIterable(missingIds)
-            .flatMapSequential(hnClient::getItem)
-            .collectList()
-            .block();
-
-        // Async save posts to DB
-        List<Post> postsToSave = postService.toEntityList(loadedItems);
-        postService.saveAsync(postsToSave);
-
-        List<Post> allPosts = Stream.concat(cachedPosts.stream(), postsToSave.stream())
-            .sorted(Comparator.comparing(Post::getId).reversed())
-            .collect(Collectors.toList());
-
-        return paginateAndRender(allPosts, storyIds, page, model);
-    }
-
-    private String handleDbRequest(Model model, int page) {
-        // Get all posts from DB
-        List<Post> allPosts = postService.findAll();
-        List<Integer> allIds = allPosts.stream()
-            .map(Post::getId)
-            .toList();
-
-        log.info("Loading page {} from database, total posts: {}", page, allIds.size());
-
-        return paginateAndRender(allPosts, allIds, page, model);
-    }
-
-    private String paginateAndRender(List<Post> posts, List<Integer> allIds, int page, Model model) {
-        int totalPosts = allIds.size();
-        int totalPages = (int) Math.ceil((double) totalPosts / PAGE_SIZE);
-
-        // Limit page
-        if (page < 1) page = 1;
-        if (page > totalPages && totalPages > 0) page = totalPages;
-
-        int fromIndex = (page - 1) * PAGE_SIZE;
-
-        List<Post> pagePosts = posts.stream()
-            .sorted(Comparator.comparing(Post::getId).reversed())
-            .skip(fromIndex)
-            .limit(PAGE_SIZE)
-            .toList();
-
-        var items = pagePosts.stream()
-            .map(postService::toDto)
-            .toList();
-
-        model.addAttribute("stories", items);
-        model.addAttribute("currentPage", page);
+        model.addAttribute("stories", newsService.getPage(safePage, PAGE_SIZE));
+        model.addAttribute("currentPage", safePage);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("pageSize", PAGE_SIZE);
 
